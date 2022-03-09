@@ -47,7 +47,7 @@ int analyze(const string& user_input, char*& arr, int& top_index) {
         }
     }
     // top_index means how many '(' still not paired with ')', but since index start with 0, so total counts need +1
-    final_result=final_result + top_index + 1;
+    final_result = final_result + top_index + 1;
     return final_result;
 }
 
@@ -66,6 +66,8 @@ int main() {
     char* arr;
     int top_index = -1;
     string user_input = get_parentheses_str("Enter parentheses: ", arr);
+
+    //analyze
     int result = analyze(user_input, arr, top_index);
     show_result(result);
 
