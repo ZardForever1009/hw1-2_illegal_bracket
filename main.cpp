@@ -54,11 +54,9 @@ int analyze(const string& user_input, char*& arr, int& top_index) {
 // show result
 void show_result(const int result) {
     cout << "=====Analyze Result=====\n";
-    if (result == -1)cout << "No valid input\n";
-    else cout << "Illogical count: " << result << endl;
+    cout << "Illogical count: " << result << endl;
     cout << "========================\n";
 }
-
 
 int main() {
 
