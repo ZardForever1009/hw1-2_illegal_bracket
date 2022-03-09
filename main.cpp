@@ -25,26 +25,37 @@ void show_stack(const int& arr_size, char*& arr) {
     cout << "Element counts: " << arr_size << endl;
     for (int i = 1; i <= arr_size; i++) {
         if (i == 1)cout << "Top: ";
-        else cout<<"     ";
+        else cout << "     ";
         cout << arr[arr_size - i] << endl;
     }
     cout << "=======================" << endl;
 }
 
-// pop function also return the pop item
-
-// push function with given input
-void push(int& arr_size, char*& arr, char push_item){
-    arr_size++;
-
+// pop stack top item and return it
+char pop(int& arr_size, char*& arr) {
+    // empty array(use '!' as representation)
+    if (arr_size == 0)return '!';
+    else{
+        char pop_item = arr[arr_size-1];
+        arr_size--;
+        return pop_item;
+    }
 }
+
 
 int main() {
 
+    // create array to simulate stack
     char* arr;
     int arr_size = get_parentheses_and_build_stack("Enter parentheses: ", arr);
 
     show_stack(arr_size, arr);
+    char pop_item = pop(arr_size, arr);
+    show_stack(arr_size, arr);
+
+    // deallocate memory space
+    arr = nullptr;
+    delete arr;
 
     system("pause");
     return 0;
