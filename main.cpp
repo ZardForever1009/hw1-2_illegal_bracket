@@ -7,39 +7,56 @@
 
 using namespace std;
 
-// get parentheses size and user input to build an array(Should store size of arr)
-int get_parentheses_and_build_stack(const string& info, char*& arr) {
+// get parentheses user input and new an identical size array
+string get_parentheses_str(const string& info, char*& arr) {
     cout << info;
     string input;
     getline(cin, input);
-    arr = new char[input.size()];
-    for (int i = 0; i < input.size(); i++) {
-        arr[i] = input[i];
-    }
-    return int(input.size());
+    arr = new char[input.size(), '0'];
+    return input;
 }
 
-//show stack status
-void show_stack(const int& arr_size, char*& arr) {
-    cout << "=====Stack Status======" << endl;
-    cout << "Element counts: " << arr_size << endl;
-    for (int i = 1; i <= arr_size; i++) {
-        if (i == 1)cout << "Top: ";
-        else cout << "     ";
-        cout << arr[arr_size - i] << endl;
-    }
-    cout << "=======================" << endl;
+// push function
+void push(char push_item, char*& arr, int& top_index) {
+    top_index++;
+    arr[top_index] = push_item;
 }
 
 // pop stack top item and return it
-char pop(int& arr_size, char*& arr) {
+char pop(char*& arr, int& top_index) {
     // empty array(use '!' as representation)
-    if (arr_size == 0)return '!';
-    else{
-        char pop_item = arr[arr_size-1];
-        arr_size--;
+    if (top_index == -1)return '!';
+    else {
+        char pop_item = arr[top_index];
+        top_index--;
         return pop_item;
     }
+}
+
+// analyze
+int analyze(const string& user_input, char*& arr, int& top_index) {
+    int arr_size = int(user_input.size());
+    int final_result = 0;
+    for (int i = 0; i < arr_size; i++) {
+        if (user_input[i] == '(')push(user_input[i], arr, top_index);
+        else if (user_input[i] == ')') {
+            // call pop
+            // when pop_result=='!', it means a ')' impossible to get paired
+            char pop_result = pop(arr, top_index);
+            if (pop_result == '!')final_result++;
+        }
+    }
+    // top_index means how many '(' still not paired with ')', but since index start with 0, so total counts need +1
+    final_result=final_result + top_index + 1;
+    return final_result;
+}
+
+// show result
+void show_result(const int result) {
+    cout << "=====Analyze Result=====\n";
+    if (result == -1)cout << "No valid input\n";
+    else cout << "Illogical count: " << result << endl;
+    cout << "========================\n";
 }
 
 
@@ -47,11 +64,10 @@ int main() {
 
     // create array to simulate stack
     char* arr;
-    int arr_size = get_parentheses_and_build_stack("Enter parentheses: ", arr);
-
-    show_stack(arr_size, arr);
-    char pop_item = pop(arr_size, arr);
-    show_stack(arr_size, arr);
+    int top_index = -1;
+    string user_input = get_parentheses_str("Enter parentheses: ", arr);
+    int result = analyze(user_input, arr, top_index);
+    show_result(result);
 
     // deallocate memory space
     arr = nullptr;
